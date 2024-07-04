@@ -23,8 +23,8 @@ const fetchMyIP = function(callback) {
       return;
     }
     
-
-    callback(null, body.ip);
+    const ip = body.ip;
+    callback(null, ip);
   });
 };
 
