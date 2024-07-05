@@ -26,6 +26,8 @@ const fetchCoordsByIP = function(ip, callback) {
   
   const url = `http://ipwho.is/${ip}`;
 
+
+  // call the api
   needle.get(url, (error, response, body) => {
     if (error) {
       callback(error);
@@ -51,10 +53,27 @@ const fetchCoordsByIP = function(ip, callback) {
 };
 
 
+const fetchISSFlyOverTimes = function(coords, callback) {
+  const url = `https://iss-flyover.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`;
+
+  needle.get(url, (error, response, body) => {
+    if (error) {
+      callback(error);
+      return;
+    }
+
+    if (response.statusCode !== 200) {
+      callback(Error(`Status Code ${response.statusCode} when fetching ISS pass times: ${body}`), null);
+      return;
+    }
+
+    const flyBys = body.response;
+    callback(null, flyBys);
+  });
+
+};
 
 
 
 
-
-
-module.exports = { fetchMyIP, fetchCoordsByIP };
+module.exports = { fetchCoordsByIP, fetchISSFlyOverTimes, fetchMyIP };
